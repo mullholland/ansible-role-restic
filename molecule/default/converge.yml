@@ -10,4 +10,4 @@
       - 'export RESTIC_REPOSITORY=/opt/restic-repo'
       - 'export RESTIC_PASSWORD=SuperSecure'
   roles:
-    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+    - role: "ansible-role-restic"

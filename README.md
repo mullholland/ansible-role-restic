@@ -101,7 +101,7 @@ This example is taken from `molecule/default/converge.yml` and is tested on each
       - 'export RESTIC_REPOSITORY=/opt/restic-repo'
       - 'export RESTIC_PASSWORD=SuperSecure'
   roles:
-    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"
+    - role: "mullholland.restic"
 ```
 
 The machine needs to be prepared in CI this is done using `molecule/default/prepare.yml`:
@@ -111,15 +111,6 @@ The machine needs to be prepared in CI this is done using `molecule/default/prep
   hosts: all
 
   tasks:
-    - name: SmokeTests
-      debug:
-        msg:
-          - "ansible_version => {{ansible_version}}"
-          - "ansible_distribution => {{ ansible_distribution }}"
-          - "ansible_distribution_major_version => {{ ansible_distribution_major_version }}"
-          - "ansible_os_family  => {{ ansible_os_family}}"
-          - "ansible_system  => {{ ansible_system }}"
-
     - name: update ca-certificates and install cron
       package:
         name:
