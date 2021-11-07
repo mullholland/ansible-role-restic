@@ -1,5 +1,5 @@
 ---
-image: "mullholland/docker-molecule-github-action"
+image: "registry.gitlab.com/mullholland/docker-molecule-github-action"
 
 services:
   - docker:dind

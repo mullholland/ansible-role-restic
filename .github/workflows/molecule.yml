@@ -20,7 +20,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           command: lint
 
@@ -40,12 +40,12 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: mullholland
-          scenario: default
+          namespace: "ghcr.io/mullholland"
+          scenario: "default"
           ansible: "2.9"
-          platform: ${{ matrix.platform }}
+          platform: "${{ matrix.platform }}"
 
   "default-210":
     needs:
@@ -62,12 +62,12 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: mullholland
-          scenario: default
+          namespace: "ghcr.io/mullholland"
+          scenario: "default"
           ansible: "2.10"
-          platform: ${{ matrix.platform }}
+          platform: "${{ matrix.platform }}"
 
   "default-211":
     needs:
@@ -84,12 +84,12 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: mullholland
-          scenario: default
+          namespace: "ghcr.io/mullholland"
+          scenario: "default"
           ansible: "2.11"
-          platform: ${{ matrix.platform }}
+          platform: "${{ matrix.platform }}"
 
   "package-29":
     needs:
@@ -106,12 +106,12 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: mullholland
-          scenario: package
+          namespace: "ghcr.io/mullholland"
+          scenario: "package"
           ansible: "2.9"
-          platform: ${{ matrix.platform }}
+          platform: "${{ matrix.platform }}"
 
   "package-210":
     needs:
@@ -128,12 +128,12 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: mullholland
-          scenario: package
+          namespace: "ghcr.io/mullholland"
+          scenario: "package"
           ansible: "2.10"
-          platform: ${{ matrix.platform }}
+          platform: "${{ matrix.platform }}"
 
   "package-211":
     needs:
@@ -150,9 +150,9 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: mullholland
-          scenario: package
+          namespace: "ghcr.io/mullholland"
+          scenario: "package"
           ansible: "2.11"
-          platform: ${{ matrix.platform }}
+          platform: "${{ matrix.platform }}"
