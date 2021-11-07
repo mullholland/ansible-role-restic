@@ -47,7 +47,6 @@ jobs:
           ansible: "2.9"
           platform: "${{ matrix.platform }}"
 
-
   "default-210":
     needs:
       - linting
@@ -69,7 +68,6 @@ jobs:
           scenario: "default"
           ansible: "2.10"
           platform: "${{ matrix.platform }}"
-
 
   "default-211":
     needs:
@@ -93,7 +91,6 @@ jobs:
           ansible: "2.11"
           platform: "${{ matrix.platform }}"
 
-
   "package-29":
     needs:
       - linting
@@ -115,7 +112,6 @@ jobs:
           scenario: "package"
           ansible: "2.9"
           platform: "${{ matrix.platform }}"
-
 
   "package-210":
     needs:
@@ -139,7 +135,6 @@ jobs:
           ansible: "2.10"
           platform: "${{ matrix.platform }}"
 
-
   "package-211":
     needs:
       - linting
@@ -161,4 +156,3 @@ jobs:
           scenario: "package"
           ansible: "2.11"
           platform: "${{ matrix.platform }}"
-
