@@ -20,7 +20,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           command: lint
 
@@ -40,7 +40,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           namespace: mullholland
           scenario: default
@@ -62,7 +62,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           namespace: mullholland
           scenario: default
@@ -84,7 +84,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           namespace: mullholland
           scenario: default
@@ -106,7 +106,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           namespace: mullholland
           scenario: package
@@ -128,7 +128,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           namespace: mullholland
           scenario: package
@@ -150,7 +150,7 @@ jobs:
         with:
           path: "${{ github.repository }}"
       - name: molecule
-        uses: mullholland/molecule-github-action@v0.1
+        uses: mullholland/molecule-github-action@v0.1.1
         with:
           namespace: mullholland
           scenario: package
