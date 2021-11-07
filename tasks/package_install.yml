@@ -1,0 +1,15 @@
+---
+- name: Install restic from package
+  package:
+    name: "{{ restic_package_name }}"
+    state: present
+
+- name: Create restic directories
+  file:
+    state: "directory"
+    path: "{{ item }}"
+    mode: "0750"
+    owner: "{{ restic_user }}"
+    group: "{{ restic_group }}"
+  with_items:
+    - "{{ restic_config_path }}"

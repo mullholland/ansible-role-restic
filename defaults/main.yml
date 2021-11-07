@@ -1,0 +1,72 @@
+---
+# can be:
+# package => install restic via package manager
+# git => downloads the release from git
+# some RedHat based OS may need an extra repository for package install
+# see scenario "package" under "molecule/package"
+restic_install: "package"
+# if downloaded from git set version number
+restic_version: "0.12.1"
+
+# Directories
+restic_config_path: "/etc/restic"
+
+# if downloaded from git set paths
+restic_path: "/opt/restic"
+restic_download_path: "{{ restic_path }}/tmp"
+restic_bin_path: "{{ restic_path }}/bin"
+restic_bin_system_path: "/usr/local/bin"
+
+# User
+restic_user: '{{ ansible_user | default("root") }}'
+restic_group: '{{ ansible_user | default("root") }}'
+
+restic_env:
+  - 'export RESTIC_REPOSITORY=/opt/restic-repo'
+  - 'export RESTIC_PASSWORD=SuperSecure'
+
+restic_backup_options:
+  - '--one-file-system'
+  - '--exclude-caches'
+restic_backup_folders:
+  - '/etc'
+  - '/root'
+  - '/var/spool/cron'
+restic_backup_excludes:
+  - '*.swp'
+  - '*.tmp'
+  - '/tmp'
+
+# configure retentions
+restic_retentions:
+  - "--keep-hourly 4"
+  - "--keep-daily 7"
+  - "--keep-weekly 4"
+  - "--keep-monthly 6"
+  - "--keep-within 30d"
+
+# define restic-backup cron
+restic_cron_backup:
+  minute: "5"
+  hour: "*"
+  day: "*"
+  weekday: "*"
+  month: "*"
+
+# define restic-prune cron
+restic_cron_prune:
+  minute: "35"
+  hour: "5"
+  day: "*"
+  weekday: "*"
+  month: "*"
+
+# Define pre/post commands for restic backup
+restic_backup_pre_command: []
+restic_backup_post_command: []
+# restic_post_command: "curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/XXXX-XXXX-XXXX-XXXX"
+
+# Define pre/post commands for restic prune
+restic_prune_pre_command: []
+restic_prune_post_command: []
+# restic_post_command: "curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/XXXX-XXXX-XXXX-XXXX"

@@ -1,0 +1,20 @@
+---
+- name: Include distribution specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution }}.yml'
+    - '{{ ansible_os_family }}.yml'
+    - '{{ ansible_system }}.yml'
+    - 'default.yml'
+
+- name: Install from package
+  include: "package_install.yml"
+  when: restic_install == "package"
+
+- name: Install from git release
+  include: "git_install.yml"
+  when: restic_install == "git"
+
+- name: Deploy restic config and scripts
+  include: "config.yml"

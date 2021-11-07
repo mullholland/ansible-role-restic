@@ -1,0 +1,60 @@
+---
+- name: Create restic-env
+  template:
+    src: "restic-env.j2"
+    dest: "{{ restic_config_path }}/restic-env"
+    owner: "{{ restic_user }}"
+    group: "{{ restic_group }}"
+    mode: "0700"
+
+- name: Create restic-includes
+  template:
+    src: "restic-includes.j2"
+    dest: "{{ restic_config_path }}/restic-includes"
+    owner: "{{ restic_user }}"
+    group: "{{ restic_group }}"
+    mode: "0700"
+
+- name: Create restic-excludes
+  template:
+    src: "./restic-excludes.j2"
+    dest: "{{ restic_config_path }}/restic-excludes"
+    owner: "{{ restic_user }}"
+    group: "{{ restic_group }}"
+    mode: "0700"
+
+- name: Create restic-backup
+  template:
+    src: "./restic-backup.j2"
+    dest: "{{ restic_bin_system_path }}/restic-backup"
+    owner: "{{ restic_user }}"
+    group: "{{ restic_group }}"
+    mode: "0700"
+
+- name: Create restic-prune
+  template:
+    src: "./restic-prune.j2"
+    dest: "{{ restic_bin_system_path }}/restic-prune"
+    owner: "{{ restic_user }}"
+    group: "{{ restic_group }}"
+    mode: "0700"
+
+- name: Create restic-backup cron
+  cron:
+    name: "restic-backup"
+    minute: "{{ restic_cron_backup.minute }}"
+    hour: "{{ restic_cron_backup.hour }}"
+    day: "{{ restic_cron_backup.day }}"
+    weekday: "{{ restic_cron_backup.weekday }}"
+    month: "{{ restic_cron_backup.month }}"
+    job: "{{ restic_bin_system_path }}/restic-backup"
+
+- name: Create restic-prune cron
+  cron:
+    name: "restic-prune"
+    minute: "{{ restic_cron_prune.minute }}"
+    hour: "{{ restic_cron_prune.hour }}"
+    day: "{{ restic_cron_prune.day }}"
+    weekday: "{{ restic_cron_prune.weekday }}"
+    month: "{{ restic_cron_prune.month }}"
+    job: "{{ restic_bin_system_path }}/restic-prune"

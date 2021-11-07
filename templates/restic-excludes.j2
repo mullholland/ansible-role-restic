@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+# https://restic.readthedocs.io/en/latest/040_backup.html#excluding-files
+{% for restic_backup_exclude in restic_backup_excludes %}
+{{ restic_backup_exclude }}
+{% endfor %}

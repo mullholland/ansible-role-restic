@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+# https://restic.readthedocs.io/en/latest/040_backup.html#including-files
+{% for restic_backup_folder in restic_backup_folders %}
+{{ restic_backup_folder }}
+{% endfor %}

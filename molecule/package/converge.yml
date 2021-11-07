@@ -1,0 +1,12 @@
+---
+- name: converge
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    restic_install: "package"
+    restic_env:
+      - 'export RESTIC_REPOSITORY=/opt/restic-repo'
+      - 'export RESTIC_PASSWORD=SuperSecure'
+  roles:
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

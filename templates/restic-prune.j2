@@ -1,0 +1,32 @@
+#!/bin/bash
+set -eu
+
+# get config through environment variables
+source '{{ restic_config_path }}/restic-env'
+
+{% if restic_prune_pre_command != "" %}
+echo "Executing prune pre command"
+{{ restic_prune_pre_command }}
+{% endif %}
+
+echo "Starting pruning"
+
+# check if repository is ok
+restic check
+
+
+restic forget \
+{% for restic_retention in restic_retentions %}
+       {{ restic_retention }} \
+{% endfor %}
+       --prune
+
+echo "Finished pruning"
+
+{% if restic_prune_post_command != "" %}
+echo "Executing prune post command"
+{{ restic_prune_post_command }}
+{% endif %}
+
+
+exit 0

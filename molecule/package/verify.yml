@@ -1,0 +1,134 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: check if connection still works
+      ping:
+
+    - name: Test restic binary system link
+      command: '/usr/local/bin/restic version'
+      register: restic_version
+      changed_when: restic_version.rc != 0
+      when: ansible_os_family == "Redhat"
+
+    - name: Test restic binary system link
+      command: '/usr/bin/restic version'
+      register: restic_version
+      changed_when: restic_version.rc != 0
+      when: ansible_os_family == "Debian"
+
+    - name: Test if restic-backup script exists
+      lineinfile:
+        name: '/usr/local/bin/restic-backup'
+        line: 'echo "Finished restic backup"'
+        state: present
+      check_mode: true
+      register: file_restic_backup
+      failed_when: (file_restic_backup is changed) or (file_restic_backup is failed)
+
+    - name: verify restic-backup filemode
+      file:
+        name: '/usr/local/bin/restic-backup'
+        owner: "root"
+        group: "root"
+        mode: "0700"
+      register: mode_restic_backup
+      failed_when: (mode_restic_backup is changed) or (mode_restic_backup is failed)
+
+    - name: Test if restic-prune script exists
+      lineinfile:
+        name: '/usr/local/bin/restic-prune'
+        line: 'echo "Finished pruning"'
+        state: present
+      check_mode: true
+      register: file_restic_prune
+      failed_when: (file_restic_prune is changed) or (file_restic_prune is failed)
+
+    - name: verify restic-prune filemode
+      file:
+        name: '/usr/local/bin/restic-prune'
+        owner: "root"
+        group: "root"
+        mode: "0700"
+      register: mode_restic_prune
+      failed_when: (mode_restic_prune is changed) or (mode_restic_prune is failed)
+
+    - name: Test if restic-env exists
+      lineinfile:
+        name: '/etc/restic/restic-env'
+        line: '# Environment file for restic settings'
+        state: present
+      check_mode: true
+      register: file_restic_env
+      failed_when: (file_restic_prune is changed) or (file_restic_prune is failed)
+
+    - name: verify restic-env filemode
+      file:
+        name: '/etc/restic/restic-env'
+        owner: "root"
+        group: "root"
+        mode: "0700"
+      register: mode_restic_env
+      failed_when: (mode_restic_env is changed) or (mode_restic_env is failed)
+
+    - name: Test if restic-includes exists
+      lineinfile:
+        name: '/etc/restic/restic-includes'
+        line: '# https://restic.readthedocs.io/en/latest/040_backup.html#including-files'
+        state: present
+      check_mode: true
+      register: file_restic_includes
+      failed_when: (file_restic_includes is changed) or (file_restic_includes is failed)
+
+    - name: verify restic-includes filemode
+      file:
+        name: '/etc/restic/restic-includes'
+        owner: "root"
+        group: "root"
+        mode: "0700"
+      register: mode_restic_includes
+      failed_when: (mode_restic_includes is changed) or (mode_restic_includes is failed)
+
+    - name: Test if restic-excludes exists
+      lineinfile:
+        name: '/etc/restic/restic-excludes'
+        line: '# https://restic.readthedocs.io/en/latest/040_backup.html#excluding-files'
+        state: present
+      check_mode: true
+      register: file_restic_excludes
+      failed_when: (file_restic_excludes is changed) or (file_restic_excludes is failed)
+
+    - name: verify restic-excludes filemode
+      file:
+        name: '/etc/restic/restic-excludes'
+        owner: "root"
+        group: "root"
+        mode: "0700"
+      register: mode_restic_excludes
+      failed_when: (mode_restic_excludes is changed) or (mode_restic_excludes is failed)
+
+    - name: verify restic backup cron
+      cron:
+        name: "restic-backup"
+        minute: "5"
+        hour: "*"
+        day: "*"
+        weekday: "*"
+        month: "*"
+        job: "/usr/local/bin/restic-backup"
+      register: cron_restic_backup
+      failed_when: (cron_restic_backup is changed) or (cron_restic_backup is failed)
+
+    - name: verify restic prune cron
+      cron:
+        name: "restic-prune"
+        minute: "35"
+        hour: "5"
+        day: "*"
+        weekday: "*"
+        month: "*"
+        job: "/usr/local/bin/restic-prune"
+      register: cron_restic_prune
+      failed_when: (cron_restic_prune is changed) or (cron_restic_prune is failed)
