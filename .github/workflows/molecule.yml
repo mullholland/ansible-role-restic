@@ -42,7 +42,7 @@ jobs:
       - name: molecule
         uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: "ghcr.io/mullholland/"
+          namespace: "ghcr.io/mullholland"
           scenario: "default"
           ansible: "2.9"
           platform: "${{ matrix.platform }}"
@@ -64,7 +64,7 @@ jobs:
       - name: molecule
         uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: "ghcr.io/mullholland/"
+          namespace: "ghcr.io/mullholland"
           scenario: "default"
           ansible: "2.10"
           platform: "${{ matrix.platform }}"
@@ -86,7 +86,7 @@ jobs:
       - name: molecule
         uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: "ghcr.io/mullholland/"
+          namespace: "ghcr.io/mullholland"
           scenario: "default"
           ansible: "2.11"
           platform: "${{ matrix.platform }}"
@@ -108,7 +108,7 @@ jobs:
       - name: molecule
         uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: "ghcr.io/mullholland/"
+          namespace: "ghcr.io/mullholland"
           scenario: "package"
           ansible: "2.9"
           platform: "${{ matrix.platform }}"
@@ -130,7 +130,7 @@ jobs:
       - name: molecule
         uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: "ghcr.io/mullholland/"
+          namespace: "ghcr.io/mullholland"
           scenario: "package"
           ansible: "2.10"
           platform: "${{ matrix.platform }}"
@@ -152,7 +152,7 @@ jobs:
       - name: molecule
         uses: mullholland/molecule-github-action@v0.1.1
         with:
-          namespace: "ghcr.io/mullholland/"
+          namespace: "ghcr.io/mullholland"
           scenario: "package"
           ansible: "2.11"
           platform: "${{ matrix.platform }}"
