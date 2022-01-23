@@ -9,9 +9,9 @@ stages:
   - "default-210"
   - "default-211"
   - "default-212"
-  - "package-210"
-  - "package-211"
-  - "package-212"
+  - "git-210"
+  - "git-211"
+  - "git-212"
 
 variables:
   DOCKER_HOST: "tcp://docker:2375"
@@ -71,12 +71,12 @@ linting:
   script:
     - "scenario=${SCENARIO} ansible=${ANSIBLE} platform=${PLATFORM} /opt/molecule.sh"
 
-"package-210":
+"git-210":
   needs:
     - "linting"
-  stage: "package-210"
+  stage: "git-210"
   variables:
-    SCENARIO: "package"
+    SCENARIO: "git"
     ANSIBLE: "2.10"
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
@@ -86,12 +86,12 @@ linting:
   script:
     - "scenario=${SCENARIO} ansible=${ANSIBLE} platform=${PLATFORM} /opt/molecule.sh"
 
-"package-211":
+"git-211":
   needs:
     - "linting"
-  stage: "package-211"
+  stage: "git-211"
   variables:
-    SCENARIO: "package"
+    SCENARIO: "git"
     ANSIBLE: "2.11"
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
@@ -101,12 +101,12 @@ linting:
   script:
     - "scenario=${SCENARIO} ansible=${ANSIBLE} platform=${PLATFORM} /opt/molecule.sh"
 
-"package-212":
+"git-212":
   needs:
     - "linting"
-  stage: "package-212"
+  stage: "git-212"
   variables:
-    SCENARIO: "package"
+    SCENARIO: "git"
     ANSIBLE: "2.12"
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"

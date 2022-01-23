@@ -160,7 +160,7 @@ The minimum version of Ansible required is 2.10, tests have been done to:
 -   The current version.
 
 This Role has the following additional molecule test scenarios:
--   package
+-   git
 
 Details can be found in ```molecule/```
 
