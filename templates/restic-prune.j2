@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -u
 
 # get config through environment variables
 source '{{ restic_config_path }}/restic-env'
@@ -21,12 +21,23 @@ restic forget \
 {% endfor %}
        --prune
 
-echo "Finished pruning"
+backup_status=$?
 
+if [[ $backup_status -eq 0 ]]
+then
+  echo "Finished pruning"
 {% if restic_prune_post_command != "" %}
-echo "Executing prune post command"
-{{ restic_prune_post_command }}
+  echo "Executing backup post command"
+  {{ restic_prune_post_command }}
 {% endif %}
+else
+  echo "ERROR pruning"
+{% if restic_prune_post_error_command != "" %}
+  echo "Executing backup post error command"
+  {{ restic_prune_post_error_command }}
+{% endif %}
+fi
+
 
 
 exit 0

@@ -22,8 +22,8 @@ restic_user: '{{ ansible_user | default("root") }}'
 restic_group: '{{ ansible_user | default("root") }}'
 
 restic_env:
-  - 'export RESTIC_REPOSITORY=/opt/restic-repo'
-  - 'export RESTIC_PASSWORD=SuperSecure'
+  - 'RESTIC_REPOSITORY=/opt/restic-repo'
+  - 'RESTIC_PASSWORD=SuperSecure'
 
 restic_backup_options:
   - '--one-file-system'
@@ -62,11 +62,13 @@ restic_cron_prune:
   month: "*"
 
 # Define pre/post commands for restic backup
-restic_backup_pre_command: []
-restic_backup_post_command: []
+restic_backup_pre_command: ""
+restic_backup_post_command: ""  # Execute on success
+restic_backup_post_error_command: ""  # Execute on error
 # restic_post_command: "curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/XXXX-XXXX-XXXX-XXXX"
 
 # Define pre/post commands for restic prune
-restic_prune_pre_command: []
-restic_prune_post_command: []
+restic_prune_pre_command: ""
+restic_prune_post_command: ""  # Execute on success
+restic_prune_post_error_command: ""  # Execute on error
 # restic_post_command: "curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/XXXX-XXXX-XXXX-XXXX"

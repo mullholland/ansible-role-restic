@@ -13,22 +13,20 @@
           - "ansible_os_family  => {{ ansible_os_family}}"
           - "ansible_system  => {{ ansible_system }}"
 
+    - name: Test restic binary
+      command: '/opt/restic/bin/restic version'
+      register: restic_version
+      changed_when: restic_version.rc != 0
+
     - name: Test restic binary system link
       command: '/usr/local/bin/restic version'
       register: restic_version
       changed_when: restic_version.rc != 0
-      when: ansible_os_family == "Redhat"
-
-    - name: Test restic binary system link
-      command: '/usr/bin/restic version'
-      register: restic_version
-      changed_when: restic_version.rc != 0
-      when: ansible_os_family == "Debian"
 
     - name: Test if restic-backup script exists
       lineinfile:
         name: '/usr/local/bin/restic-backup'
-        line: 'echo "Finished restic backup"'
+        line: '# get config through environment variables'
         state: present
       check_mode: true
       register: file_restic_backup
@@ -40,13 +38,14 @@
         owner: "root"
         group: "root"
         mode: "0700"
+      check_mode: true
       register: mode_restic_backup
       failed_when: (mode_restic_backup is changed) or (mode_restic_backup is failed)
 
     - name: Test if restic-prune script exists
       lineinfile:
         name: '/usr/local/bin/restic-prune'
-        line: 'echo "Finished pruning"'
+        line: '# get config through environment variables'
         state: present
       check_mode: true
       register: file_restic_prune
@@ -58,6 +57,7 @@
         owner: "root"
         group: "root"
         mode: "0700"
+      check_mode: true
       register: mode_restic_prune
       failed_when: (mode_restic_prune is changed) or (mode_restic_prune is failed)
 
@@ -76,6 +76,7 @@
         owner: "root"
         group: "root"
         mode: "0700"
+      check_mode: true
       register: mode_restic_env
       failed_when: (mode_restic_env is changed) or (mode_restic_env is failed)
 
@@ -94,6 +95,7 @@
         owner: "root"
         group: "root"
         mode: "0700"
+      check_mode: true
       register: mode_restic_includes
       failed_when: (mode_restic_includes is changed) or (mode_restic_includes is failed)
 
@@ -112,29 +114,57 @@
         owner: "root"
         group: "root"
         mode: "0700"
+      check_mode: true
       register: mode_restic_excludes
       failed_when: (mode_restic_excludes is changed) or (mode_restic_excludes is failed)
 
     - name: verify restic backup cron
-      cron:
+      ansible.builtin.cron:
         name: "restic-backup"
         minute: "5"
         hour: "*"
         day: "*"
         weekday: "*"
         month: "*"
+        cron_file: "restic"
+        user: root
         job: "/usr/local/bin/restic-backup"
+      check_mode: true
       register: cron_restic_backup
       failed_when: (cron_restic_backup is changed) or (cron_restic_backup is failed)
 
     - name: verify restic prune cron
-      cron:
+      ansible.builtin.cron:
         name: "restic-prune"
         minute: "35"
         hour: "5"
         day: "*"
         weekday: "*"
         month: "*"
+        cron_file: "restic"
+        user: root
         job: "/usr/local/bin/restic-prune"
+      check_mode: true
       register: cron_restic_prune
       failed_when: (cron_restic_prune is changed) or (cron_restic_prune is failed)
+
+    - name: "Verfiy OLD crons are gone"
+      ansible.builtin.cron:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - "restic-backup"
+        - "restic-prune"
+      check_mode: true
+      register: molecule_old_cron
+      failed_when: (molecule_old_cron is changed) or (molecule_old_cron is failed)
+
+    - name: verify restic backup
+      command: '/usr/local/bin/restic-backup'
+      register: restic_backup
+      changed_when: restic_backup.rc != 0
+
+    - name: verify restic prune
+      command: '/usr/local/bin/restic-prune'
+      register: restic_prune
+      changed_when: restic_prune.rc != 0

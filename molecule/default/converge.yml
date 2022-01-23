@@ -4,8 +4,7 @@
   become: true
   gather_facts: true
   vars:
-    restic_install: "git"
-    restic_bin_system_path: "/usr/local/bin"
+    restic_install: "package"
     restic_env:
       - 'export RESTIC_REPOSITORY=/opt/restic-repo'
       - 'export RESTIC_PASSWORD=SuperSecure'
