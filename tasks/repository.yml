@@ -1,0 +1,43 @@
+---
+- name: Add yum repository for restic (CentOS 7)
+  yum_repository:
+    name: "restic"
+    description: "RESTIC YUM repo"
+    baseurl: "https://download.copr.fedorainfracloud.org/results/copart/restic/epel-7-$basearch/"
+    gpgcheck: false
+  when:
+    - ansible_distribution == "CentOS"
+    - ansible_distribution_major_version == "7"
+
+- name: Add yum repository for restic (AlmaLinux 8)
+  yum_repository:
+    name: "restic"
+    description: "RESTIC YUM repo"
+    baseurl: "https://download.copr.fedorainfracloud.org/results/copart/restic/epel-8-$basearch/"
+    gpgcheck: false
+  when:
+    - ansible_distribution == "AlmaLinux"
+    - ansible_distribution_major_version == "8"
+
+- name: Add yum repository for restic (RockyLinux 8)
+  yum_repository:
+    name: "restic"
+    description: "RESTIC YUM repo"
+    baseurl: "https://download.copr.fedorainfracloud.org/results/copart/restic/epel-8-$basearch/"
+    gpgcheck: false
+  when:
+    - ansible_distribution == "Rocky"
+    - ansible_distribution_major_version == "8"
+
+- name: Add copr repository for restic (!Centos 7)
+  yum_repository:
+    name: "restic"
+    description: "RESTIC YUM repo"
+    baseurl: "https://download.copr.fedorainfracloud.org/results/copart/restic/epel-8-$basearch/"
+    gpgcheck: false
+  when:
+    - ansible_distribution != "Fedora"
+    - ansible_distribution != "AlmaLinux"
+    - ansible_distribution != "Rocky"
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version != "7"

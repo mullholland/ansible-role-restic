@@ -15,7 +15,7 @@ molecule_scenarios:
       - "fedora34"
       - "fedora35"
       - "amazonlinux"
-  - scenario: "package"
+  - scenario: "git"
     ansible: ["2.10", "2.11", "2.12"]
     platforms:
       - "debian9"

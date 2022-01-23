@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -u
 
 # get config through environment variables
 source '{{ restic_config_path }}/restic-env'
@@ -12,7 +12,7 @@ echo "Executing backup pre command"
 echo "Starting restic backup"
 
 # check if repository needs to be initialized first
-if ! restic snapshots 2>&1 >/dev/null; then
+if ! restic snapshots >/dev/null 2>&1; then
     restic init
 fi
 
@@ -22,17 +22,25 @@ restic check
 # create new backup
 restic backup \
 {% for restic_backup_option in restic_backup_options %}
-       {{ restic_backup_option }} \
+      {{ restic_backup_option }} \
 {% endfor %}
-  --files-from {{ restic_config_path }}/restic-includes \
-  --exclude-file={{ restic_config_path }}/restic-excludes
+      --files-from {{ restic_config_path }}/restic-includes \
+      --exclude-file={{ restic_config_path }}/restic-excludes
 
-echo "Finished restic backup"
+backup_status=$?
 
+if [[ $backup_status -eq 0 ]]; then
+  echo "Finished restic backup"
 {% if restic_backup_post_command != "" %}
-echo "Executing backup post command"
-{{ restic_backup_post_command }}
+  echo "Executing backup post command"
+  {{ restic_backup_post_command }}
 {% endif %}
-
+else
+  echo "ERROR in restic backup"
+{% if restic_backup_post_error_command != "" %}
+  echo "Executing backup post error command"
+  {{ restic_backup_post_error_command }}
+{% endif %}
+fi
 
 exit 0

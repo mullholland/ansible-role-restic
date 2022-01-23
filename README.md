@@ -34,8 +34,8 @@ restic_user: '{{ ansible_user | default("root") }}'
 restic_group: '{{ ansible_user | default("root") }}'
 
 restic_env:
-  - 'export RESTIC_REPOSITORY=/opt/restic-repo'
-  - 'export RESTIC_PASSWORD=SuperSecure'
+  - 'RESTIC_REPOSITORY=/opt/restic-repo'
+  - 'RESTIC_PASSWORD=SuperSecure'
 
 restic_backup_options:
   - '--one-file-system'
@@ -74,13 +74,15 @@ restic_cron_prune:
   month: "*"
 
 # Define pre/post commands for restic backup
-restic_backup_pre_command: []
-restic_backup_post_command: []
+restic_backup_pre_command: ""
+restic_backup_post_command: ""  # Execute on success
+restic_backup_post_error_command: ""  # Execute on error
 # restic_post_command: "curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/XXXX-XXXX-XXXX-XXXX"
 
 # Define pre/post commands for restic prune
-restic_prune_pre_command: []
-restic_prune_post_command: []
+restic_prune_pre_command: ""
+restic_prune_post_command: ""  # Execute on success
+restic_prune_post_error_command: ""  # Execute on error
 # restic_post_command: "curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/XXXX-XXXX-XXXX-XXXX"
 ```
 
@@ -95,8 +97,7 @@ This example is taken from `molecule/default/converge.yml` and is tested on each
   become: true
   gather_facts: true
   vars:
-    restic_install: "git"
-    restic_bin_system_path: "/usr/local/bin"
+    restic_install: "package"
     restic_env:
       - 'export RESTIC_REPOSITORY=/opt/restic-repo'
       - 'export RESTIC_PASSWORD=SuperSecure'
@@ -107,25 +108,29 @@ This example is taken from `molecule/default/converge.yml` and is tested on each
 The machine needs to be prepared in CI this is done using `molecule/default/prepare.yml`:
 ```yaml
 ---
-- name: Prepare the Molecule Test Resources
+- name: Prepare
   hosts: all
+  become: true
+  gather_facts: true
 
   tasks:
-    - name: update ca-certificates and install cron
-      package:
+    - name: Install dependencies
+      ansible.builtin.package:
         name:
-          - "ca-certificates"
-          - "cron"
-        state: latest
-      when: ansible_os_family == "Debian"
+          - "cronie"  # For the cron script
+          - "hostname"  # For the cron script
+        state: present
+      when:
+        - ansible_distribution in [ "RedHat", "CentOS", "Amazon", "Rocky", "AlmaLinux", "Fedora" ]
 
-    - name: update ca-certificates and install cron
-      package:
+    - name: Install dependencies
+      ansible.builtin.package:
         name:
-          - "ca-certificates"
-          - "cronie"
-        state: latest
-      when: ansible_os_family == "RedHat" or ansible_os_family == "Rocky"
+          - "cron"  # To create crontab entry
+          - "hostname"  # For the cron script
+        state: present
+      when:
+        - ansible_os_family == "Debian"
 ```
 
 
@@ -155,7 +160,7 @@ The minimum version of Ansible required is 2.10, tests have been done to:
 -   The current version.
 
 This Role has the following additional molecule test scenarios:
--   package
+-   git
 
 Details can be found in ```molecule/```
 

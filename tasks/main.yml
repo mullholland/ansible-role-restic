@@ -8,6 +8,10 @@
     - '{{ ansible_system }}.yml'
     - 'default.yml'
 
+- name: Install repository
+  include: "repository.yml"
+  when: restic_install == "package"
+
 - name: Install from package
   include: "package_install.yml"
   when: restic_install == "package"

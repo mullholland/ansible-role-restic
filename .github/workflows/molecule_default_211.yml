@@ -5,9 +5,12 @@ name: "Ansible Molecule (2.11/default)"
 
 on:
   push:
-    tags_ignore:
-      - '*'
+    branches:
+      - '**'
+    tags-ignore:
+      - '*.*'
   pull_request:
+    types: [assigned]
   schedule:
     - cron: '35 18 18 * *'
 
