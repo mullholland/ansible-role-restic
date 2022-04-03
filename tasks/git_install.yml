@@ -1,16 +1,16 @@
 ---
 - name: Check if already downloaded
-  stat:
+  ansible.builtin.stat:
     path: '{{ restic_download_path }}/{{ restic_package }}.bz2'
   register: restic_downloaded
 
 - name: Check if already installed
-  stat:
+  ansible.builtin.stat:
     path: '{{ restic_bin_path }}/restic'
   register: restic_installed
 
 - name: Check version if already installed
-  stat:
+  ansible.builtin.stat:
     path: '{{ restic_bin_path }}/restic version'
   register: restic_installed_version
 
