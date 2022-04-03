@@ -5,7 +5,7 @@
 
   tasks:
     - name: SmokeTests
-      debug:
+      ansible.builtin.debug:
         msg:
           - "ansible_version => {{ansible_version}}"
           - "ansible_distribution => {{ ansible_distribution }}"
@@ -14,17 +14,17 @@
           - "ansible_system  => {{ ansible_system }}"
 
     - name: Test restic binary
-      command: '/opt/restic/bin/restic version'
+      ansible.builtin.command: '/opt/restic/bin/restic version'
       register: restic_version
       changed_when: restic_version.rc != 0
 
     - name: Test restic binary system link
-      command: '/usr/local/bin/restic version'
+      ansible.builtin.command: '/usr/local/bin/restic version'
       register: restic_version
       changed_when: restic_version.rc != 0
 
     - name: Test if restic-backup script exists
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: '/usr/local/bin/restic-backup'
         line: '# get config through environment variables'
         state: present
@@ -33,7 +33,7 @@
       failed_when: (file_restic_backup is changed) or (file_restic_backup is failed)
 
     - name: verify restic-backup filemode
-      file:
+      ansible.builtin.file:
         name: '/usr/local/bin/restic-backup'
         owner: "root"
         group: "root"
@@ -43,7 +43,7 @@
       failed_when: (mode_restic_backup is changed) or (mode_restic_backup is failed)
 
     - name: Test if restic-prune script exists
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: '/usr/local/bin/restic-prune'
         line: '# get config through environment variables'
         state: present
@@ -52,7 +52,7 @@
       failed_when: (file_restic_prune is changed) or (file_restic_prune is failed)
 
     - name: verify restic-prune filemode
-      file:
+      ansible.builtin.file:
         name: '/usr/local/bin/restic-prune'
         owner: "root"
         group: "root"
@@ -62,7 +62,7 @@
       failed_when: (mode_restic_prune is changed) or (mode_restic_prune is failed)
 
     - name: Test if restic-env exists
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: '/etc/restic/restic-env'
         line: '# Environment file for restic settings'
         state: present
@@ -71,7 +71,7 @@
       failed_when: (file_restic_prune is changed) or (file_restic_prune is failed)
 
     - name: verify restic-env filemode
-      file:
+      ansible.builtin.file:
         name: '/etc/restic/restic-env'
         owner: "root"
         group: "root"
@@ -81,7 +81,7 @@
       failed_when: (mode_restic_env is changed) or (mode_restic_env is failed)
 
     - name: Test if restic-includes exists
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: '/etc/restic/restic-includes'
         line: '# https://restic.readthedocs.io/en/latest/040_backup.html#including-files'
         state: present
@@ -90,7 +90,7 @@
       failed_when: (file_restic_includes is changed) or (file_restic_includes is failed)
 
     - name: verify restic-includes filemode
-      file:
+      ansible.builtin.file:
         name: '/etc/restic/restic-includes'
         owner: "root"
         group: "root"
@@ -100,7 +100,7 @@
       failed_when: (mode_restic_includes is changed) or (mode_restic_includes is failed)
 
     - name: Test if restic-excludes exists
-      lineinfile:
+      ansible.builtin.lineinfile:
         name: '/etc/restic/restic-excludes'
         line: '# https://restic.readthedocs.io/en/latest/040_backup.html#excluding-files'
         state: present
@@ -109,7 +109,7 @@
       failed_when: (file_restic_excludes is changed) or (file_restic_excludes is failed)
 
     - name: verify restic-excludes filemode
-      file:
+      ansible.builtin.file:
         name: '/etc/restic/restic-excludes'
         owner: "root"
         group: "root"
@@ -160,11 +160,11 @@
       failed_when: (molecule_old_cron is changed) or (molecule_old_cron is failed)
 
     - name: verify restic backup
-      command: '/usr/local/bin/restic-backup'
+      ansible.builtin.command: '/usr/local/bin/restic-backup'
       register: restic_backup
       changed_when: restic_backup.rc != 0
 
     - name: verify restic prune
-      command: '/usr/local/bin/restic-prune'
+      ansible.builtin.command: '/usr/local/bin/restic-prune'
       register: restic_prune
       changed_when: restic_prune.rc != 0

@@ -1,12 +1,12 @@
 ---
 - name: Install restic dependencies
-  package:
+  ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items: "{{ restic_dependencies }}"
 
 - name: Create restic directories
-  file:
+  ansible.builtin.file:
     state: "directory"
     path: "{{ item }}"
     mode: "0750"
@@ -19,45 +19,46 @@
     - "{{ restic_bin_path }}"
 
 - name: Download client binary
-  get_url:
+  ansible.builtin.get_url:
     url: '{{ restic_url }}'
     dest: '{{ restic_download_path }}/{{ restic_package }}.bz2'
+    mode: "0644"
     force: true
   register: get_url_restic
 
 - name: Decompress the binary
-  shell: "bzip2 -dc {{ restic_download_path }}/{{ restic_package }}.bz2 > {{ restic_bin_path }}/restic_{{ restic_version }}"
+  ansible.builtin.shell: "bzip2 -dc {{ restic_download_path }}/{{ restic_package }}.bz2 > {{ restic_bin_path }}/restic_{{ restic_version }}"
   args:
     creates: '{{ restic_bin_path }}/restic_{{ restic_version }}'
 
 - name: Ensure permissions are correct
-  file:
+  ansible.builtin.file:
     path: '{{ restic_bin_path }}/restic_{{ restic_version }}'
     mode: '0755'
     owner: '{{ restic_user }}'
     group: '{{ restic_group }}'
 
 - name: Test the binary
-  command: "{{ restic_bin_path }}/restic_{{ restic_version }} version"
+  ansible.builtin.command: "{{ restic_bin_path }}/restic_{{ restic_version }} version"
   ignore_errors: true
   changed_when: false
   register: restic_test_result
 
 - name: Remove faulty binary
-  file:
+  ansible.builtin.file:
     path: '{{ restic_bin_path }}/restic_{{ restic_version }}'
     state: absent
   when: "'FAILED' in restic_test_result.stderr"
 
 - name: Fail if restic could not be installed
-  fail:
+  ansible.builtin.fail:
     msg: >-
       Restic binary has been faulty and has been removed.
       Try to re-run the role and make sure you have bzip2 installed!
   when: "'FAILED' in restic_test_result.stderr"
 
 - name: "Link binary to {{ restic_bin_path }}/restic"
-  file:
+  ansible.builtin.file:
     src: "{{ restic_bin_path }}/restic_{{ restic_version }}"
     dest: "{{ restic_bin_path }}/restic"
     force: true
@@ -66,7 +67,7 @@
     state: link
 
 - name: "Link binary to {{ restic_bin_system_path }}/restic"
-  file:
+  ansible.builtin.file:
     src: "{{ restic_bin_path }}/restic_{{ restic_version }}"
     dest: "{{ restic_bin_system_path }}/restic"
     force: true
