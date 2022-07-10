@@ -51,11 +51,11 @@ restic_backup_excludes:
 
 # configure retentions
 restic_retentions:
-  - "--keep-hourly 4"
+  - "--keep-hourly 12"
   - "--keep-daily 7"
   - "--keep-weekly 4"
   - "--keep-monthly 6"
-  - "--keep-within 30d"
+  - "--keep-yearly 2"
 
 # define restic-backup cron
 restic_cron_backup:
