@@ -8,6 +8,7 @@
 profile: production
 
 exclude_paths:
+  - meta/preferences.yml
   - molecule/**/prepare.yml
   - molecule/**/converge.yml
   - molecule/**/verify.yml

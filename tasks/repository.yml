@@ -1,5 +1,5 @@
 ---
-- name: Add yum repository for restic (CentOS 7)
+- name: repository | Add yum repository for restic (CentOS 7)
   ansible.builtin.yum_repository:
     name: "restic"
     description: "RESTIC YUM repo"
@@ -9,7 +9,7 @@
     - ansible_distribution == "CentOS"
     - ansible_distribution_major_version == "7"
 
-- name: Add yum repository for restic (AlmaLinux 8)
+- name: repository | Add yum repository for restic (AlmaLinux 8)
   ansible.builtin.yum_repository:
     name: "restic"
     description: "RESTIC YUM repo"
@@ -19,7 +19,7 @@
     - ansible_distribution == "AlmaLinux"
     - ansible_distribution_major_version == "8"
 
-- name: Add yum repository for restic (RockyLinux 8)
+- name: repository | Add yum repository for restic (RockyLinux 8)
   ansible.builtin.yum_repository:
     name: "restic"
     description: "RESTIC YUM repo"
@@ -29,7 +29,7 @@
     - ansible_distribution == "Rocky"
     - ansible_distribution_major_version == "8"
 
-- name: Add copr repository for restic (!Centos 7)
+- name: repository | Add copr repository for restic (!Centos 7)
   ansible.builtin.yum_repository:
     name: "restic"
     description: "RESTIC YUM repo"
