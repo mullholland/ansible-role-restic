@@ -1,21 +1,21 @@
 ---
-- name: Check if already downloaded
+- name: git_install | Check if already downloaded
   ansible.builtin.stat:
     path: '{{ restic_download_path }}/{{ restic_package }}.bz2'
   register: restic_downloaded
 
-- name: Check if already installed
+- name: git_install | Check if already installed
   ansible.builtin.stat:
     path: '{{ restic_bin_path }}/restic'
   register: restic_installed
 
-- name: Check version if already installed
+- name: git_install | Check version if already installed
   ansible.builtin.stat:
     path: '{{ restic_bin_path }}/restic version'
   register: restic_installed_version
 
-- name: Install from git release
-  include: "git_download.yml"
+- name: git_install | Install from git release
+  ansible.builtin.include_tasks: "git_download.yml"
   when: not restic_downloaded.stat.exists or
         not restic_installed or
         restic_version not in restic_installed_version

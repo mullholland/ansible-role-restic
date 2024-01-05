@@ -9,16 +9,16 @@
     - 'default.yml'
 
 - name: Install repository
-  include: "repository.yml"
+  ansible.builtin.include_tasks: "repository.yml"
   when: restic_install == "package"
 
 - name: Install from package
-  include: "package_install.yml"
+  ansible.builtin.include_tasks: "package_install.yml"
   when: restic_install == "package"
 
 - name: Install from git release
-  include: "git_install.yml"
+  ansible.builtin.include_tasks: "git_install.yml"
   when: restic_install == "git"
 
 - name: Deploy restic config and scripts
-  include: "config.yml"
+  ansible.builtin.include_tasks: "config.yml"

@@ -1,11 +1,11 @@
 ---
-- name: Install restic dependencies
+- name: git_download | Install restic dependencies
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
   with_items: "{{ restic_dependencies }}"
 
-- name: Create restic directories
+- name: git_download | Create restic directories
   ansible.builtin.file:
     state: "directory"
     path: "{{ item }}"
@@ -18,7 +18,7 @@
     - "{{ restic_download_path }}"
     - "{{ restic_bin_path }}"
 
-- name: Download client binary
+- name: git_download | Download client binary
   ansible.builtin.get_url:
     url: '{{ restic_url }}'
     dest: '{{ restic_download_path }}/{{ restic_package }}.bz2'
@@ -26,38 +26,38 @@
     force: true
   register: get_url_restic
 
-- name: Decompress the binary
+- name: git_download | Decompress the binary
   ansible.builtin.shell: "bzip2 -dc {{ restic_download_path }}/{{ restic_package }}.bz2 > {{ restic_bin_path }}/restic_{{ restic_version }}"
   args:
     creates: '{{ restic_bin_path }}/restic_{{ restic_version }}'
 
-- name: Ensure permissions are correct
+- name: git_download | Ensure permissions are correct
   ansible.builtin.file:
     path: '{{ restic_bin_path }}/restic_{{ restic_version }}'
     mode: '0755'
     owner: '{{ restic_user }}'
     group: '{{ restic_group }}'
 
-- name: Test the binary
+- name: git_download | Test the binary
   ansible.builtin.command: "{{ restic_bin_path }}/restic_{{ restic_version }} version"
   ignore_errors: true
   changed_when: false
   register: restic_test_result
 
-- name: Remove faulty binary
+- name: git_download | Remove faulty binary
   ansible.builtin.file:
     path: '{{ restic_bin_path }}/restic_{{ restic_version }}'
     state: absent
   when: "'FAILED' in restic_test_result.stderr"
 
-- name: Fail if restic could not be installed
+- name: git_download | Fail if restic could not be installed
   ansible.builtin.fail:
     msg: >-
       Restic binary has been faulty and has been removed.
       Try to re-run the role and make sure you have bzip2 installed!
   when: "'FAILED' in restic_test_result.stderr"
 
-- name: "Link binary to {{ restic_bin_path }}/restic"
+- name: git_download | "Link binary to restic_bin_path"
   ansible.builtin.file:
     src: "{{ restic_bin_path }}/restic_{{ restic_version }}"
     dest: "{{ restic_bin_path }}/restic"
@@ -66,7 +66,7 @@
     group: '{{ restic_group }}'
     state: link
 
-- name: "Link binary to {{ restic_bin_system_path }}/restic"
+- name: git_download | "Link binary to restic_bin_system_path"
   ansible.builtin.file:
     src: "{{ restic_bin_path }}/restic_{{ restic_version }}"
     dest: "{{ restic_bin_system_path }}/restic"

@@ -1,10 +1,10 @@
 ---
-- name: Install restic from package
+- name: package_install | Install restic from package
   ansible.builtin.package:
     name: "{{ restic_package_name }}"
     state: present
 
-- name: Create restic directories
+- name: package_install | Create restic directories
   ansible.builtin.file:
     state: "directory"
     path: "{{ item }}"

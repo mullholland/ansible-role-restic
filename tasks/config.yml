@@ -1,5 +1,5 @@
 ---
-- name: Create restic-env
+- name: config | Create restic-env
   ansible.builtin.template:
     src: "restic-env.j2"
     dest: "{{ restic_config_path }}/restic-env"
@@ -7,7 +7,7 @@
     group: "{{ restic_group }}"
     mode: "0700"
 
-- name: Create restic-includes
+- name: config | Create restic-includes
   ansible.builtin.template:
     src: "restic-includes.j2"
     dest: "{{ restic_config_path }}/restic-includes"
@@ -15,7 +15,7 @@
     group: "{{ restic_group }}"
     mode: "0700"
 
-- name: Create restic-excludes
+- name: config | Create restic-excludes
   ansible.builtin.template:
     src: "./restic-excludes.j2"
     dest: "{{ restic_config_path }}/restic-excludes"
@@ -23,7 +23,7 @@
     group: "{{ restic_group }}"
     mode: "0700"
 
-- name: Create restic-backup
+- name: config | Create restic-backup
   ansible.builtin.template:
     src: "./restic-backup.j2"
     dest: "{{ restic_bin_system_path }}/restic-backup"
@@ -31,7 +31,7 @@
     group: "{{ restic_group }}"
     mode: "0700"
 
-- name: Create restic-prune
+- name: config | Create restic-prune
   ansible.builtin.template:
     src: "./restic-prune.j2"
     dest: "{{ restic_bin_system_path }}/restic-prune"
@@ -39,7 +39,7 @@
     group: "{{ restic_group }}"
     mode: "0700"
 
-- name: Create restic-backup cron
+- name: config | Create restic-backup cron
   ansible.builtin.cron:
     name: "restic-backup"
     minute: "{{ restic_cron_backup.minute }}"
@@ -51,7 +51,7 @@
     user: root
     job: "{{ restic_bin_system_path }}/restic-backup"
 
-- name: Create restic-prune cron
+- name: config | Create restic-prune cron
   ansible.builtin.cron:
     name: "restic-prune"
     minute: "{{ restic_cron_prune.minute }}"
@@ -63,7 +63,7 @@
     user: root
     job: "{{ restic_bin_system_path }}/restic-prune"
 
-- name: "Cleanup OLD crontab crons"
+- name: config | "Cleanup OLD crontab crons"
   ansible.builtin.cron:
     name: "{{ item }}"
     state: absent
