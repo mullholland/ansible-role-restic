@@ -1,19 +1,18 @@
-# [Ansible role restic](#restic)
+# [Ansible role ansible-generator](#ansible-generator)
 
 description
 
 |GitHub|Downloads|Version|
 |------|---------|-------|
-|[![github](https://github.com/mullholland/ansible-role-restic/actions/workflows/molecule.yml/badge.svg)](https://github.com/mullholland/ansible-role-restic/actions/workflows/molecule.yml)|[![downloads](https://img.shields.io/ansible/role/d/mullholland/restic)](https://galaxy.ansible.com/mullholland/restic)|[![Version](https://img.shields.io/github/release/mullholland/ansible-role-restic.svg)](https://github.com/mullholland/ansible-role-restic/releases/)|
+|[![github](https://github.com/mullholland/ansible-role-ansible-generator/actions/workflows/molecule.yml/badge.svg)](https://github.com/mullholland/ansible-role-ansible-generator/actions/workflows/molecule.yml)|[![downloads](https://img.shields.io/ansible/role/d/mullholland/ansible-generator)](https://galaxy.ansible.com/mullholland/ansible-generator)|[![Version](https://img.shields.io/github/release/mullholland/ansible-role-ansible-generator.svg)](https://github.com/mullholland/ansible-role-ansible-generator/releases/)|
 ## [Example Playbook](#example-playbook)
 
-This example is taken from [`molecule/default/converge.yml`](https://github.com/mullholland/ansible-role-restic/blob/master/molecule/default/converge.yml) and is tested on each push, pull request and release.
+This example is taken from [`molecule/default/converge.yml`](https://github.com/mullholland/ansible-role-ansible-generator/blob/master/molecule/default/converge.yml) and is tested on each push, pull request and release.
 
 ```yaml
 ---
 - name: converge
   hosts: all
-  become: true
   gather_facts: true
   vars:
     restic_install: "package"
@@ -21,17 +20,21 @@ This example is taken from [`molecule/default/converge.yml`](https://github.com/
       - 'export RESTIC_REPOSITORY=/opt/restic-repo'
       - 'export RESTIC_PASSWORD=SuperSecure'
   roles:
-    - role: "mullholland.restic"
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
 ```
 
-The machine needs to be prepared. In CI this is done using [`molecule/default/prepare.yml`](https://github.com/mullholland/ansible-role-restic/blob/master/molecule/default/prepare.yml):
+The machine needs to be prepared. In CI this is done using [`molecule/default/prepare.yml`](https://github.com/mullholland/ansible-role-ansible-generator/blob/master/molecule/default/prepare.yml):
 
 ```yaml
 ---
 - name: Prepare
   hosts: all
-  become: true
   gather_facts: true
+
+  roles:
+    - role: mullholland.repository_epel
+      when:
+        - ansible_distribution in [ "RedHat", "CentOS", "Amazon", "Rocky", "AlmaLinux" ]
 
   tasks:
     - name: Install dependencies
@@ -54,10 +57,9 @@ The machine needs to be prepared. In CI this is done using [`molecule/default/pr
 ```
 
 
-
 ## [Role Variables](#role-variables)
 
-The default values for the variables are set in [`defaults/main.yml`](https://github.com/mullholland/ansible-role-restic/blob/master/defaults/main.yml):
+The default values for the variables are set in [`defaults/main.yml`](https://github.com/mullholland/ansible-role-ansible-generator/blob/master/defaults/main.yml):
 
 ```yaml
 ---
@@ -138,15 +140,19 @@ restic_prune_post_error_command: ""  # Execute on error
 
 ## [Requirements](#requirements)
 
-- pip packages listed in [requirements.txt](https://github.com/mullholland/ansible-role-restic/blob/master/requirements.txt).
+- pip packages listed in [requirements.txt](https://github.com/mullholland/ansible-role-ansible-generator/blob/master/requirements.txt).
 
+## [State of used roles](#state-of-used-roles)
+
+The following roles are used to prepare a system. You can prepare your system in another way.
+
+| Requirement | GitHub | GitLab |
+|-------------|--------|--------|
+|[mullholland.repository_epel](https://galaxy.ansible.com/mullholland/repository_epel)|[![Build Status GitHub](https://github.com/mullholland/ansible-role-repository_epel/workflows/Ansible%20Molecule/badge.svg)](https://github.com/mullholland/ansible-role-repository_epel/actions)|[![Build Status GitLab](https://gitlab.com/mullholland-github-mirror/ansible-role-repository_epel/badges/master/pipeline.svg)](https://gitlab.com/mullholland-github-mirror/ansible-role-repository_epel)|
 
 ## [Context](#context)
 
 This role is a part of many compatible roles. Have a look at [the documentation of these roles](https://mullholland.net) for further information.
-
-Here is an overview of related roles:
-![dependencies](https://raw.githubusercontent.com/mullholland/ansible-role-restic/png/requirements.png "Dependencies")
 
 ## [Compatibility](#compatibility)
 
@@ -155,22 +161,25 @@ This role has been tested on these [container images](https://hub.docker.com/u/m
 |container|tags|
 |---------|----|
 |[EL](https://hub.docker.com/r/mullholland/enterpriselinux)|all|
-|[Amazon](https://hub.docker.com/r/mullholland/amazonlinux)|Candidate|
+|[Rocky](https://hub.docker.com/r/mullholland/rockylinux)|all|
+|[AlmaLinux](https://hub.docker.com/r/mullholland/almalinux)|all|
+|[Amazon](https://hub.docker.com/r/mullholland/amazonlinux)|all|
 |[Fedora](https://hub.docker.com/r/mullholland/fedora/)|all|
 |[Ubuntu](https://hub.docker.com/r/mullholland/ubuntu)|all|
 |[Debian](https://hub.docker.com/r/mullholland/debian)|all|
+|[CentOS](https://hub.docker.com/r/mullholland/centos)|all|
 
 The minimum version of Ansible required is 2.10, tests have been done to:
 
+- The version before the previous version.
 - The previous version.
 - The current version.
-- The development version.
 
-If you find issues, please register them in [GitHub](https://github.com/mullholland/ansible-role-restic/issues).
+If you find issues, please register them in [GitHub](https://github.com/mullholland/ansible-role-ansible-generator/issues).
 
 ## [License](#license)
 
-[MIT](https://github.com/mullholland/ansible-role-restic/blob/master/LICENSE).
+[MIT](https://github.com/mullholland/ansible-role-ansible-generator/blob/master/LICENSE).
 
 ## [Author Information](#author-information)
 

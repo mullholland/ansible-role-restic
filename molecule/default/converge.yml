@@ -1,7 +1,6 @@
 ---
 - name: converge
   hosts: all
-  become: true
   gather_facts: true
   vars:
     restic_install: "package"
@@ -9,4 +8,4 @@
       - 'export RESTIC_REPOSITORY=/opt/restic-repo'
       - 'export RESTIC_PASSWORD=SuperSecure'
   roles:
-    - role: "ansible-role-restic"
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
